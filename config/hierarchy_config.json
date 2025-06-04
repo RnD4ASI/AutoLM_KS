@@ -1,0 +1,16 @@
+{
+  "hierarchy_mapping": {
+    "au": [
+      {"standard": "APS_Hierarchy.csv"},
+      {"guidance": "APG_Hierarchy.csv"}
+    ],
+    "bs": [
+      {"standard": "CRE_Hierarchy.csv"},
+      {"guidance": "BSG_Hierarchy.csv"}
+    ],
+    "eu": [
+      {"standard": "CRD_Hierarchy.csv"}
+    ]
+  },
+  "default_hierarchy_file": "CRE_Hierarchy.csv"
+}
