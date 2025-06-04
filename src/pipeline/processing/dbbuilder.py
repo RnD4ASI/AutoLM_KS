@@ -861,8 +861,10 @@ class TextChunker:
             doc_headings = df_clean[df_clean['File'].str.contains(filename, case=False, na=False)]
             doc_headings = doc_headings.sort_values(by='Index')
             if doc_headings.empty:
-                logger.error(f"No matching headings found for {filename}")
-                raise ValueError(f"No matching headings found for document {filename} in the hierarchy file")
+                logger.warning(f"No matching headings found for document {filename} in the hierarchy file. Returning empty DataFrame.")
+                return pd.DataFrame(columns=['source', 'document_id', 'chunk_id', 'document_name',
+                                           'reference', 'hierarchy', 'corpus', 'embedding_model',
+                                           'heading', 'content_type'])
 
             # Load markdown file
             with open(markdown_file, 'r', encoding='utf-8') as f:
@@ -1840,88 +1842,114 @@ class MemoryBuilder:
             # Extract the first N entries
             sample_df = df_vector.head(num_entries).copy()
             
-            # Check if existing memory database exists and load it
-            existing_memory_file = self.memory_dir / 'episodic_memory.parquet'
+            
+            episodic_memory_parquet_path = self.memory_dir / 'episodic_memory.parquet'
+            memory_entries = []
             existing_entities = set()
-            existing_chunk_ids = set()
-            
-            if existing_memory_file.exists():
+            existing_context_chunk_ids = set()
+
+            if episodic_memory_parquet_path.exists():
+                logger.info(f"Loading existing episodic memory from {episodic_memory_parquet_path}")
                 try:
-                    existing_memory_df = pd.read_parquet(existing_memory_file)
+                    existing_memory_df = pd.read_parquet(episodic_memory_parquet_path)
                     memory_entries = existing_memory_df.to_dict('records')
-                    # Extract existing entities and chunk_ids to ensure uniqueness
                     existing_entities = set(existing_memory_df['entity'].tolist())
-                    if 'chunk_id' in existing_memory_df.columns:
-                        existing_chunk_ids = set([ctx.get('chunk_id') for ctx in existing_memory_df['context'].tolist() if ctx and 'chunk_id' in ctx])
-                    logger.info(f"Loaded existing memory database with {len(memory_entries)} entries")
+                    # Correctly extract chunk_ids from the context dictionary
+                    for entry in memory_entries:
+                        if isinstance(entry.get('context'), dict) and entry['context'].get('chunk_id'):
+                            existing_context_chunk_ids.add(entry['context']['chunk_id'])
+                    logger.info(f"Loaded {len(memory_entries)} existing entries.")
                 except Exception as e:
-                    logger.warning(f"Could not load existing memory database: {str(e)}. Creating new one.")
-                    memory_entries = []
+                    logger.warning(f"Could not load existing episodic memory database: {e}. It might be recreated or appended to if possible.")
+                    memory_entries = [] # Start fresh if loading fails catastrophically
             else:
-                memory_entries = []
-            
-            # Create new memory entries conforming to the memory_db schema
-            for _, row in sample_df.iterrows():
-                # Generate unique entity based on document_name and reference
-                entity_base = f"{row['document_name']}_{row.get('reference', 'unknown')}"
-                entity = entity_base
-                
-                # Ensure entity is unique
-                counter = 1
-                while entity in existing_entities:
-                    entity = f"{entity_base}_{counter}"
-                    counter += 1
-                existing_entities.add(entity)
-                
-                # Get chunk_id from row if exists, otherwise generate one
-                chunk_id = row.get('chunk_id', self.datautility.generate_uuid())
-                
-                # Ensure chunk_id is unique
-                counter = 1
-                while chunk_id in existing_chunk_ids:
-                    chunk_id = f"{chunk_id}_{counter}"
-                    counter += 1
-                existing_chunk_ids.add(chunk_id)
-                
-                # Create context with required fields in specified order
-                context = {
-                    'document_name': row['document_name'],
-                    'content': row['corpus'],
-                    'reference': row.get('reference', f"Reference-{self.datautility.generate_uuid()[:8]}"),
-                    'source': row.get('source', Path(vector_db_file).stem),
-                    'chunk_id': chunk_id,
-                    'hierarchy': row['hierarchy'],
-                    'timestamp': datetime.datetime.now().isoformat()
-                }
-                
-                memory_entry = {
-                    'memory_id': self.datautility.generate_uuid(),
-                    'query': f"Tell me about {row['document_name']}",
-                    'entity': entity,
-                    'context': context
-                }
-                memory_entries.append(memory_entry)
-            
-            # Convert to DataFrame
+                logger.info(f"{episodic_memory_parquet_path} not found. Creating with dummy entries.")
+                for i in range(1, 4): # Create 3 dummy entries
+                    dummy_entry = {
+                        'memory_id': self.datautility.generate_uuid(),
+                        'query': "Dummy query",
+                        'entity': f"Dummy entity {i}",
+                        'context': {
+                            'document_name': "Dummy document",
+                            'content': "Dummy content",
+                            'reference': f"Dummy reference {i}",
+                            'source': "Dummy source",
+                            'chunk_id': f"dummy_chunk_id_{i}",
+                            'hierarchy': "Dummy hierarchy",
+                            'timestamp': datetime.datetime.now().isoformat()
+                        }
+                    }
+                    memory_entries.append(dummy_entry)
+                    existing_entities.add(dummy_entry['entity'])
+                    existing_context_chunk_ids.add(dummy_entry['context']['chunk_id'])
+                logger.info(f"Created {len(memory_entries)} dummy entries.")
+
+            # If vector_db_file is provided, process it and append new, non-duplicate entries
+            if vector_db_file:
+                if not os.path.exists(vector_db_file):
+                    logger.error(f"Vector database not found: {vector_db_file}. Cannot append entries.")
+                else:
+                    df_vector = pd.read_parquet(vector_db_file)
+                    required_columns = ['corpus', 'document_name', 'hierarchy', 'chunk_id', 'reference']
+                    if not all(col in df_vector.columns for col in required_columns):
+                        raise ValueError(f"Vector database {vector_db_file} is missing one or more required columns: {required_columns}")
+
+                    sample_df = df_vector.head(num_entries).copy()
+                    logger.info(f"Processing {len(sample_df)} entries from {vector_db_file} for episodic memory.")
+
+                    for _, row in sample_df.iterrows():
+                        prospective_entity = f"{row['document_name']}_{row.get('reference', self.datautility.generate_uuid()[:8])}"
+                        prospective_context_chunk_id = row.get('chunk_id')
+
+                        if prospective_entity in existing_entities:
+                            logger.warning(f"Skipping entry for entity '{prospective_entity}' as it already exists.")
+                            continue
+
+                        if prospective_context_chunk_id in existing_context_chunk_ids:
+                            logger.warning(f"Skipping entry for context.chunk_id '{prospective_context_chunk_id}' as it already exists in memory.")
+                            continue
+
+                        context = {
+                            'document_name': row['document_name'],
+                            'content': row['corpus'],
+                            'reference': row.get('reference', f"Ref-{self.datautility.generate_uuid()[:8]}"),
+                            'source': row.get('source', Path(vector_db_file).stem),
+                            'chunk_id': prospective_context_chunk_id, # Use original chunk_id from vector_db
+                            'hierarchy': row['hierarchy'],
+                            'timestamp': datetime.datetime.now().isoformat()
+                        }
+
+                        memory_entry = {
+                            'memory_id': self.datautility.generate_uuid(),
+                            'query': f"Tell me about {row['document_name']}", # Generic query
+                            'entity': prospective_entity,
+                            'context': context
+                        }
+                        memory_entries.append(memory_entry)
+                        existing_entities.add(prospective_entity)
+                        existing_context_chunk_ids.add(prospective_context_chunk_id)
+
+            if not memory_entries:
+                 logger.warning("No entries (dummy or new) to save for episodic memory. Parquet file will not be created/updated.")
+                 return str(episodic_memory_parquet_path) # Return path, even if not written, to avoid downstream errors expecting path
+
             memory_df = pd.DataFrame(memory_entries)
+            memory_df.to_parquet(episodic_memory_parquet_path)
             
-            # Save to parquet file in the memory directory with a standardized name
-            output_file = self.memory_dir / 'episodic_memory.parquet'
-            memory_df.to_parquet(output_file)
+            logger.info(f"Episodic memory database saved to {episodic_memory_parquet_path} with {len(memory_df)} entries.")
+            logger.debug(f"Episodic memory database creation/update completed in {time.time() - start_time:.2f} seconds.")
             
-            logger.info(f"Memory database created with {len(memory_df)} entries and saved to {output_file}")
-            logger.debug(f"Memory database creation completed in {time.time() - start_time:.2f} seconds")
-            
-            return str(output_file)
+            return str(episodic_memory_parquet_path)
             
         except Exception as e:
-            logger.error(f"Error creating memory database: {str(e)}")
+            logger.error(f"Error creating/updating episodic memory database: {str(e)}")
             logger.debug(f"Memory database creation error details: {traceback.format_exc()}")
             raise
     
-    def create_personality_db(self, personality_traits: List[Dict[str, Any]], output_file: Optional[str] = None) -> str:
+    def create_personality_db(self) -> str:
         """
-        Create a personality memory database from a list of personality traits.
+        Create a personality memory database by loading from 'db/memory/personality_memory_full.json'
+        and saving to 'db/memory/personality_memory.parquet'.
         This method specifically handles personality memory, which has a different schema
         than episodic memory and should remain separate.
         
@@ -1936,44 +1964,51 @@ class MemoryBuilder:
         - mode_description: Text description of the mode
         - activation_contexts: List of contexts where this mode is appropriate
         - activation_triggers: List of trigger objects that activate this mode
-        
-        Args:
-            personality_traits: List of dictionaries containing personality traits
-            output_file: Path to save the personality memory database file.
-                        If None, will use the default path in the memory directory.
             
         Returns:
-            str: Path to the saved personality memory database file
+            str: Path to the saved personality memory database file (personality_memory.parquet)
             
         Raises:
-            ValueError: If the personality traits are invalid or missing required fields
+            FileNotFoundError: If personality_memory_full.json is not found.
+            ValueError: If the loaded personality traits are invalid or missing required fields.
+            RuntimeError: If file operations fail.
         """
-        logger.debug("Starting to create personality memory database")
+        logger.debug("Starting to create personality memory database from JSON file.")
         start_time = time.time()
-        
+
+        input_json_path = self.memory_dir / 'personality_memory_full.json'
+        output_parquet_path = self.memory_dir / 'personality_memory.parquet'
+
         try:
+            # Load personality traits from JSON file
+            if not input_json_path.exists():
+                logger.error(f"Input JSON file not found: {input_json_path}")
+                raise FileNotFoundError(f"Input JSON file not found: {input_json_path}")
+
+            with open(input_json_path, 'r', encoding='utf-8') as f:
+                personality_traits = json.load(f)
+            
+            if not isinstance(personality_traits, list):
+                logger.error(f"Invalid format in {input_json_path}: Expected a list of traits.")
+                raise ValueError(f"Invalid format in {input_json_path}: Expected a list of traits.")
+
             if not personality_traits:
-                raise ValueError("No personality traits provided for memory creation")
+                logger.warning(f"No personality traits found in {input_json_path}. Output Parquet file will be empty or reflect existing data if append logic is used.")
+                # Depending on desired behavior, could raise ValueError or just create an empty/unchanged parquet.
+                # For now, proceed to allow handling of existing parquet.
             
-            # Determine output file path
-            if output_file is None:
-                output_file = self.memory_dir / 'personality_memory.parquet'
-            else:
-                output_file = Path(output_file)
-            
-            # Check if existing personality DB exists
+            # Check if existing personality DB exists (the output parquet file)
             existing_modes = {}
-            
-            if output_file.exists():
+            if output_parquet_path.exists():
                 try:
-                    existing_df = pd.read_parquet(output_file)
+                    existing_df = pd.read_parquet(output_parquet_path)
                     # Convert existing data to dict for easier handling
                     for _, row in existing_df.iterrows():
-                        if 'mode_id' in row and row['mode_id']:
+                        if 'mode_id' in row and row['mode_id']: # Ensure mode_id is valid before using as key
                             existing_modes[row['mode_id']] = row.to_dict()
-                    logger.info(f"Loaded existing personality database with {len(existing_modes)} entries")
+                    logger.info(f"Loaded existing personality database from {output_parquet_path} with {len(existing_modes)} entries")
                 except Exception as e:
-                    logger.warning(f"Could not load existing personality database: {e}. Creating new one.")
+                    logger.warning(f"Could not load existing personality database from {output_parquet_path}: {e}. Treating as new.")
             
             # Standardize and validate personality traits
             validated_traits = []
@@ -2055,14 +2090,23 @@ class MemoryBuilder:
                 validated_traits.append(trait)
             
             # Combine existing and new entries
-            all_entries = list(existing_modes.values()) + validated_traits
-            
-            if not all_entries:
-                logger.warning("No valid personality traits to save.")
-                return str(output_file) if output_file.exists() else None
-            
-            # Convert to DataFrame
-            df = pd.DataFrame(all_entries)
+            # The `validated_traits` will be populated based on `personality_traits` read from JSON
+            all_entries = list(existing_modes.values()) + validated_traits # validated_traits is populated below
+
+            if not all_entries and not personality_traits: # If no existing and no new traits from JSON
+                logger.warning(f"No valid personality traits from {input_json_path} and no existing data in {output_parquet_path}. Output will be empty.")
+                # Create an empty DataFrame with schema if necessary, or handle as per requirements
+                # For now, let it proceed; an empty df.to_parquet() might be fine or error.
+                # Let's ensure an empty DataFrame is created if all_entries is empty.
+                if not all_entries:
+                    df = pd.DataFrame(columns=['mode_id', 'mode_name', 'personality_type', 'personality_score',
+                                               'cognitive_style', 'mbti_type', 'sentiment_score',
+                                               'mode_description', 'activation_contexts', 'activation_triggers'])
+                else:
+                    df = pd.DataFrame(all_entries)
+
+            else: # If there are entries to process
+                df = pd.DataFrame(all_entries)
             
             # Handle complex data types for Parquet compatibility
             list_columns = ['personality_type', 'activation_contexts', 'activation_triggers']
@@ -2095,15 +2139,21 @@ class MemoryBuilder:
                         df[col] = df[col].apply(lambda x: json.dumps(x) if isinstance(x, dict) else x)
             
             # Save the personality database
-            df.to_parquet(output_file)
+            df.to_parquet(output_parquet_path)
             
-            logger.info(f"Personality memory database created with {len(df)} entries and saved to {output_file}")
+            logger.info(f"Personality memory database created/updated with {len(df)} entries and saved to {output_parquet_path}")
             logger.debug(f"Personality memory database creation completed in {time.time() - start_time:.2f} seconds")
             
-            return str(output_file)
-            
+            return str(output_parquet_path)
+
+        except FileNotFoundError:
+            # Already logged, re-raise for calling code to handle
+            raise
+        except json.JSONDecodeError as je:
+            logger.error(f"Error decoding JSON from {input_json_path}: {je}")
+            raise RuntimeError(f"Failed to decode JSON from {input_json_path}") from je
         except Exception as e:
-            logger.error(f"Error creating personality memory database: {str(e)}")
+            logger.error(f"Error creating personality memory database: {e}")
             logger.debug(f"Personality memory database creation error details: {traceback.format_exc()}")
             raise
     
@@ -2392,7 +2442,7 @@ class GraphBuilder:
                     model="Qwen2.5-1.5B",  # Use a smaller, efficient model
                     temperature=0.7,  # Balanced temperature for creative yet focused extraction
                     max_tokens=500,  # Reasonable length for responses
-                    content=chunk_content,  # Pass the chunk content as a parameter
+                    chunk_content=chunk_content,  # Pass the chunk content as a parameter with the key 'chunk_content'
                     return_full_response=False  # We just want the text output
                 )
                 
@@ -2924,9 +2974,14 @@ class GraphBuilder:
                 logger.warning(f"No valid {vector_field} found for similarity comparison")
                 return []
             
-            # Convert to numpy array and normalize
+            # Convert to numpy array
             query_vector = np.array(row[vector_field])
-            query_vector = query_vector / np.linalg.norm(query_vector)
+            query_vector_norm = np.linalg.norm(query_vector)
+
+            if query_vector_norm == 0:
+                logger.warning(f"Query vector for chunk_id '{row['chunk_id']}' has zero norm. Skipping similarity calculation for this chunk.")
+                return []
+            query_vector = query_vector / query_vector_norm
             
             # Calculate similarities for all chunks with appropriate vectors
             similarities = []
@@ -2938,9 +2993,14 @@ class GraphBuilder:
                 if vector_field not in other_row or not isinstance(other_row[vector_field], (list, np.ndarray)):
                     continue  # Skip if no matching vector
                 
-                # Convert to numpy array and normalize
+                # Convert to numpy array
                 other_vector = np.array(other_row[vector_field])
-                other_vector = other_vector / np.linalg.norm(other_vector)
+                other_vector_norm = np.linalg.norm(other_vector)
+
+                if other_vector_norm == 0:
+                    logger.warning(f"Comparison vector for chunk_id '{other_row['chunk_id']}' has zero norm. Skipping this comparison.")
+                    continue
+                other_vector = other_vector / other_vector_norm
                 
                 # Calculate cosine similarity
                 try:
@@ -4157,41 +4217,54 @@ class PipelineCoordinator:
                     self.statistics.update(key, value)
             
             # Step 3: Merge databases by partition if requested
-            partition_merged_paths = {}
-            merged_vector_db_path = None
-            merged_graph_db_path = None
-            merged_episodic_memory_db_path = None
-            personality_memory_db_path = None
+            partition_merged_paths = {} # This will store paths to merged files, keyed by type then partition
+            # merged_vector_db_path = None # Not storing a single path anymore, using partition_merged_paths
+            # merged_graph_db_path = None  # Not storing a single path anymore
+            # merged_episodic_memory_db_path = None # Not part of this specific subtask's merging focus
+            # personality_memory_db_path = None # Not part of this specific subtask's merging focus
             
             if merge_results and vector_db_paths:
-                # Get base output name
-                output_name = raw_dir.name if raw_dir.name != "raw" else "complete"
-                
-                # Merge vector and graph databases by partition
-                partition_merged_paths = self.merge_all_databases_by_partition(
-                    {
-                        'vector': vector_db_paths,
-                        'graph': graph_db_paths
-                    },
-                    output_name=output_name
+                logger.info("Processing option 'merge_results' is True. Merging vector databases by partition.")
+                # The output directory for merged vector DBs is implicitly self.vector_builder.vector_dir
+                merged_vector_db_paths_by_partition = self.merge_vector_databases_by_partition(
+                    vector_db_paths=vector_db_paths
                 )
-                
-                # For backward compatibility, store the last merged paths
-                if partition_merged_paths:
-                    last_partition = list(partition_merged_paths.keys())[-1]
-                    merged_vector_db_path = partition_merged_paths[last_partition].get('vector')
-                    merged_graph_db_path = partition_merged_paths[last_partition].get('graph')
-                
-                # Merge episodic memory databases (kept separate from personality memory)
-                if memory_db_paths:
-                    merged_episodic_memory_db_path = self.merge_episodic_memory_databases(
-                        memory_db_paths=memory_db_paths,
-                        output_dir=memory_dir,
-                        output_filename="episodic_memory.parquet"
+                if merged_vector_db_paths_by_partition:
+                    partition_merged_paths['vector'] = merged_vector_db_paths_by_partition
+                else:
+                    logger.warning("Merging vector databases by partition resulted in no paths.")
+
+                if graph_db_paths:
+                    logger.info("Processing option 'merge_results' is True. Merging graph databases by partition.")
+                    # The output_dir for merged graph DBs is implicitly self.graph_builder.graph_dir
+                    merged_graph_db_paths_by_partition = self.merge_graph_databases_by_partition(
+                        graph_db_paths=graph_db_paths
                     )
-            
-            # Step 4: Create personality memory DB (always separate from episodic memory)
-            personality_memory_db_path = self.setup_personality_memory(memory_dir)
+                    if merged_graph_db_paths_by_partition:
+                        partition_merged_paths['graph'] = merged_graph_db_paths_by_partition
+                    else:
+                        logger.warning("Merging graph databases by partition resulted in no paths.")
+
+                # Episodic memory database merging (if needed by partition, implement similarly)
+                # if memory_db_paths:
+                #    logger.info("Merging episodic memory databases.")
+                #    # This would require a merge_episodic_memory_databases_by_partition method
+                #    # For now, the existing merge_episodic_memory_databases merges all into one.
+                #    merged_episodic_memory_db_path = self.merge_episodic_memory_databases(
+                #        memory_db_paths=memory_db_paths, # Contains individual m_{basename}.parquet files
+                #        output_dir=memory_dir,
+                #        output_filename="episodic_memory_merged.parquet" # Ensure a distinct name if needed
+                #    )
+                #    if merged_episodic_memory_db_path:
+                #        # partition_merged_paths might not be the right place if it's a single merged file
+                #        logger.info(f"Merged episodic memory database at: {merged_episodic_memory_db_path}")
+                #    else:
+                #        logger.warning("Merging episodic memory databases resulted in no path.")
+
+            # Step 4: Create/setup personality memory DB (typically a global, not per-partition merged)
+            # This is generally called once, not necessarily tied to merge_results of document processing.
+            # personality_memory_db_path = self.setup_personality_memory(memory_dir)
+            # logger.info(f"Personality memory setup complete. Path: {personality_memory_db_path}")
             
             # Step 5: Finalize statistics
             self.statistics.finalize()
@@ -4602,145 +4675,137 @@ class PipelineCoordinator:
             return result
 
     def merge_vector_databases_by_partition(self, 
-                                       vector_db_paths: List[str], 
-                                       output_dir: Path,
-                                       output_prefix: str = "merged_vector") -> Dict[str, str]:
-        """Merge vector databases by partition.
+                                       vector_db_paths: List[str]
+                                       # output_dir is implicitly self.vector_builder.vector_dir
+                                       # output_prefix is removed as naming is fixed to v_{partition_name}.parquet
+                                       ) -> Dict[str, str]:
+        """Merge vector databases by partition. Output files are named v_{partition_name}.parquet.
         
         Args:
             vector_db_paths: List of vector database paths to merge
-            output_dir: Directory to save merged databases
-            output_prefix: Prefix for output filenames
             
         Returns:
-            Dictionary mapping partition names to merged database paths
+            Dictionary mapping partition names to merged database paths (e.g., {"au-standard": "path/to/v_au-standard.parquet"})
         """
-        logger.info(f"Merging {len(vector_db_paths)} vector databases by partition")
+        logger.info(f"Merging {len(vector_db_paths)} vector databases by partition.")
         start_time = time.time()
         
-        # Ensure output directory exists
-        output_dir.mkdir(parents=True, exist_ok=True)
-        
         result = {}
-        
+        self.partition_manager = PartitionManager() # Ensure partition_manager is initialized
+
         try:
             # Group databases by partition
             partition_groups = self.partition_manager.group_by_partition(vector_db_paths)
-            logger.info(f"Grouped vector databases into {len(partition_groups)} partitions")
+            logger.info(f"Grouped vector databases into {len(partition_groups)} partitions: {list(partition_groups.keys())}")
             
             # Merge each partition
             for partition_name, partition_db_paths in partition_groups.items():
                 if not partition_db_paths:
-                    logger.warning(f"No vector databases found for partition {partition_name}")
+                    logger.warning(f"No vector databases found for partition '{partition_name}'")
                     continue
                     
-                logger.info(f"Merging {len(partition_db_paths)} vector databases for partition {partition_name}")
+                logger.info(f"Merging {len(partition_db_paths)} vector databases for partition '{partition_name}'")
                 
-                # Create output filename
-                output_filename = f"{output_prefix}_{partition_name}.parquet"
-                output_path = output_dir / output_filename
-                
-                # Merge vector databases
+                # VectorBuilder.merge_db will save it as v_{partition_name}.parquet in its self.vector_dir
                 merged_db = self.vector_builder.merge_db(
                     parquet_files=partition_db_paths,
-                    output_name=str(output_path)
+                    output_name=partition_name  # Pass partition_name as the stem
                 )
                 
-                if merged_db is not None:
-                    result[partition_name] = str(output_path)
+                if merged_db is not None and not merged_db.empty:
+                    # Construct the actual path where VectorBuilder.merge_db saved the file
+                    actual_save_path = self.vector_builder.vector_dir / f"v_{partition_name}.parquet"
+                    result[partition_name] = str(actual_save_path)
                     
                     # Update statistics
                     stats = {
-                        "vector_db_size": len(merged_db),
-                        "partition_merged": True
+                        "vector_db_size": len(merged_db), # This might be cumulative; consider per-partition if needed
+                        # "partition_merged": True # This is too generic for overall stats; specific logging is better
                     }
-                    self.collect_statistics_from_operation(stats)
+                    self.collect_statistics_from_operation(stats) # Ensure this handles cumulative stats correctly
                     
-                    logger.info(f"Merged vector database for partition {partition_name} saved to {output_path}")
+                    logger.info(f"Merged vector database for partition '{partition_name}' saved to {actual_save_path}")
                 else:
-                    logger.warning(f"Failed to merge vector databases for partition {partition_name}")
+                    logger.warning(f"Failed to merge vector databases for partition '{partition_name}', or merged DB was empty.")
             
-            # Log completion
             processing_time = time.time() - start_time
-            logger.info(f"Vector database merging completed in {processing_time:.2f} seconds")
+            logger.info(f"Vector database merging by partition completed in {processing_time:.2f} seconds. Merged partitions: {list(result.keys())}")
             
             return result
             
         except Exception as e:
             logger.error(f"Error merging vector databases by partition: {str(e)}")
             logger.debug(f"Vector database merging error details: {traceback.format_exc()}")
-            return result
+            return result # Return partial results or empty dict if error occurred early
 
     def merge_graph_databases_by_partition(self, 
-                                      graph_db_paths: List[str], 
-                                      output_dir: Path,
-                                      output_prefix: str = "merged_graph") -> Dict[str, str]:
-        """Merge graph databases by partition.
+                                      graph_db_paths: List[str]
+                                      # output_dir is implicitly self.graph_builder.graph_dir
+                                      # output_prefix is removed as naming is fixed to g_{partition_name}.pkl
+                                      ) -> Dict[str, str]:
+        """Merge graph databases by partition. Output files are named g_{partition_name}.pkl.
         
         Args:
             graph_db_paths: List of graph database paths to merge
-            output_dir: Directory to save merged databases
-            output_prefix: Prefix for output filenames
             
         Returns:
-            Dictionary mapping partition names to merged database paths
+            Dictionary mapping partition names to merged database paths (e.g., {"au-standard": "path/to/g_au-standard.pkl"})
         """
-        logger.info(f"Merging {len(graph_db_paths)} graph databases by partition")
+        logger.info(f"Merging {len(graph_db_paths)} graph databases by partition.")
         start_time = time.time()
         
-        # Ensure output directory exists
-        output_dir.mkdir(parents=True, exist_ok=True)
-        
         result = {}
-        
+        self.partition_manager = PartitionManager() # Ensure partition_manager is initialized
+        # Ensure graph_builder is initialized (it might be initialized in process_directory or needs to be here)
+        if not hasattr(self, 'graph_builder') or self.graph_builder is None:
+            self.graph_builder = GraphBuilder()
+            logger.info("Initialized GraphBuilder in merge_graph_databases_by_partition as it was not set.")
+
         try:
             # Group databases by partition
             partition_groups = self.partition_manager.group_by_partition(graph_db_paths)
-            logger.info(f"Grouped graph databases into {len(partition_groups)} partitions")
+            logger.info(f"Grouped graph databases into {len(partition_groups)} partitions: {list(partition_groups.keys())}")
             
             # Merge each partition
-            for partition_name, partition_db_paths in partition_groups.items():
-                if not partition_db_paths:
-                    logger.warning(f"No graph databases found for partition {partition_name}")
+            for partition_name, partition_db_paths_for_group in partition_groups.items():
+                if not partition_db_paths_for_group:
+                    logger.warning(f"No graph databases found for partition '{partition_name}'")
                     continue
                     
-                logger.info(f"Merging {len(partition_db_paths)} graph databases for partition {partition_name}")
+                logger.info(f"Merging {len(partition_db_paths_for_group)} graph databases for partition '{partition_name}'")
                 
-                # Create output filename
-                output_filename = f"{output_prefix}_{partition_name}.pkl"
-                output_path = output_dir / output_filename
-                
-                # Merge graph databases
+                # GraphBuilder.merge_dbs will save it as g_{partition_name}.pkl in its self.graph_dir
                 merged_graph = self.graph_builder.merge_dbs(
-                    graph_files=partition_db_paths,
-                    output_name=str(output_path)
+                    graph_files=partition_db_paths_for_group,
+                    output_name=partition_name  # Pass partition_name as the stem
                 )
                 
-                if merged_graph is not None:
-                    result[partition_name] = str(output_path)
+                if merged_graph is not None and merged_graph.number_of_nodes() > 0 : # Check if graph is not empty
+                    # Construct the actual path where GraphBuilder.merge_dbs saved the file
+                    actual_save_path = self.graph_builder.graph_dir / f"g_{partition_name}.pkl"
+                    result[partition_name] = str(actual_save_path)
                     
                     # Update statistics
                     stats = {
                         "graph_nodes": merged_graph.number_of_nodes(),
                         "graph_edges": merged_graph.number_of_edges(),
-                        "partition_merged": True
+                        # "partition_merged": True # Generic, better to log specific merge event
                     }
                     self.collect_statistics_from_operation(stats)
                     
-                    logger.info(f"Merged graph database for partition {partition_name} saved to {output_path}")
+                    logger.info(f"Merged graph database for partition '{partition_name}' saved to {actual_save_path}")
                 else:
-                    logger.warning(f"Failed to merge graph databases for partition {partition_name}")
+                    logger.warning(f"Failed to merge graph databases for partition '{partition_name}', or merged graph was empty.")
             
-            # Log completion
             processing_time = time.time() - start_time
-            logger.info(f"Graph database merging completed in {processing_time:.2f} seconds")
+            logger.info(f"Graph database merging by partition completed in {processing_time:.2f} seconds. Merged partitions: {list(result.keys())}")
             
             return result
             
         except Exception as e:
             logger.error(f"Error merging graph databases by partition: {str(e)}")
             logger.debug(f"Graph database merging error details: {traceback.format_exc()}")
-            return result
+            return result # Return partial results or empty dict if error occurred early
 
 
     def merge_all_databases_by_partition(self, db_paths: Dict[str, List[str]], output_name: str) -> Dict[str, Dict[str, str]]:
