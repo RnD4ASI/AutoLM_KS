@@ -1307,6 +1307,7 @@ class Generator:
             
             logger.info(f"Attempting to load SentenceTransformer model from directory: {model_path_str}")
             embed_model = SentenceTransformer(model_path_str, trust_remote_code=True, local_files_only=True)
+            embedding_dim = self._get_embedding_dimensions(model) # Get dimensions after successful load
             
             # Prepare batching
             try:
@@ -1379,25 +1380,37 @@ class Generator:
                                 all_embeddings.append(single_embedding[0] if isinstance(single_embedding, list) else single_embedding)
                             except Exception as inner_e:
                                 logger.error(f"Failed to get embedding for individual text: {inner_e}")
+                                all_embeddings.append(np.zeros(embedding_dim)) # Append zero vector on failure
             
-            # Convert to numpy array for consistent handling
-            all_embeddings = np.array(all_embeddings)
-            
+            # Convert to numpy array for consistent handling, ensuring all elements are arrays
+            # This handles cases where some embeddings are successful and others are zero vectors
+            if not all(isinstance(emb, np.ndarray) and emb.ndim == 1 for emb in all_embeddings if emb is not None):
+                 # Attempt to convert/reshape, or handle as an error if shapes are inconsistent
+                 # For now, we'll assume conversion to np.array handles compatible lists of lists/arrays
+                 pass # Further type/shape checking could be added if needed before np.array conversion
+
+            all_embeddings_np = np.array(all_embeddings) if all_embeddings else np.empty((0, embedding_dim))
+
             # Return based on input type
             if is_single_text:
-                embedding_dim = self._get_embedding_dimensions(model)
-                return all_embeddings[0] if len(all_embeddings) > 0 else np.zeros(embedding_dim)  # Return first embedding or zeros
+                return all_embeddings_np[0] if len(all_embeddings_np) > 0 else np.zeros(embedding_dim)
             else:
-                return all_embeddings
+                return all_embeddings_np
                 
         except Exception as e:
             logger.error(f"Failed to get embeddings using HuggingFace models: {e}")
             # Return zeros as fallback
-            embedding_dim = self._get_embedding_dimensions(model)
+            # Attempt to get embedding_dim; if model string is problematic, use a default.
+            try:
+                embedding_dim = self._get_embedding_dimensions(model)
+            except Exception as dim_exc:
+                logger.error(f"Could not determine embedding dimension for model '{model}' during error handling: {dim_exc}. Using default from hf provider.")
+                embedding_dim = self.default_embedding_dimensions.get("huggingface", 384) # Fallback dimension
+
             if is_single_text:
                 return np.zeros(embedding_dim)
             else:
-                return np.array([np.zeros(embedding_dim) for _ in range(len(texts))])
+                return np.array([np.zeros(embedding_dim) for _ in range(len(texts))]) if texts else np.empty((0, embedding_dim))
 
     def _get_embedding_dimensions(self, model_name: str) -> int:
         """Get the embedding dimensions for a specific model.

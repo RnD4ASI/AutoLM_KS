@@ -165,8 +165,9 @@ class KnowledgeService:
                 'stats': result.statistics,
                 'individual_vector_db_paths': result.vector_db_paths,
                 'individual_graph_db_paths': result.graph_db_paths,
-                'individual_episodic_memory_db_paths': result.memory_db_paths, # Existing
-                'individual_personality_memory_db_paths': result.personality_memory_paths # Added
+                'individual_episodic_memory_db_paths': result.memory_db_paths,
+                'individual_personality_memory_db_paths': result.memory_db_paths, # Corrected from result.personality_memory_paths if it was a typo and should be same as episodic for individual files. Or specific if distinct. Assuming it refers to the same list of individual memory files generated before any merge.
+                'partition_merged_db_paths': result.partition_merged_paths # Added to expose paths of merged DBs by partition
             }
             
         except Exception as e:
@@ -364,15 +365,26 @@ def main():
             print(f"  Individual Memory DBs: {len(result['individual_episodic_memory_db_paths'])} files")
 
         print(f"\nConsolidated Databases:")
-        if result.get('merged_vector_db_parquet'):
-            print(f"  Merged Vector DB: {result['merged_vector_db_parquet']}")
-        if result.get('merged_graph_db_pickle'):
-            print(f"  Merged Graph DB: {result['merged_graph_db_pickle']}")
-        if result.get('merged_episodic_memory_db_parquet'):
-            print(f"  Merged Episodic Memory DB: {result['merged_episodic_memory_db_parquet']}")
-        if result.get('personality_memory_db_parquet'):
-            print(f"  Personality Memory DB: {result['personality_memory_db_parquet']}")
+        if result.get('partition_merged_db_paths'):
+            print(f"  Partition-merged DBs: {json.dumps(result['partition_merged_db_paths'], indent=2)}")
+        # The following keys like 'merged_vector_db_parquet' might be deprecated if partition_merged_db_paths is comprehensive
+        # else: # Fallback to old keys if new one is not there, for smoother transition (optional)
+            if result.get('merged_vector_db_parquet'):
+                print(f"  Merged Vector DB (legacy key): {result['merged_vector_db_parquet']}")
+            if result.get('merged_graph_db_pickle'):
+                print(f"  Merged Graph DB (legacy key): {result['merged_graph_db_pickle']}")
+            if result.get('merged_episodic_memory_db_parquet'):
+                print(f"  Merged Episodic Memory DB (legacy key): {result['merged_episodic_memory_db_parquet']}")
         
+        # Personality memory is usually a single file, not typically merged by document partition
+        if result.get('personality_memory_db_paths'): # Assuming this key exists if personality DB is processed
+             personality_db_path = result['personality_memory_db_paths'] # Adjust if it's a list or single string
+             if isinstance(personality_db_path, list) and len(personality_db_path) > 0:
+                 print(f"  Personality Memory DB: {personality_db_path[0]}") # Print first if it's a list
+             elif isinstance(personality_db_path, str):
+                 print(f"  Personality Memory DB: {personality_db_path}")
+
+
         return 0
         
     except Exception as e:
