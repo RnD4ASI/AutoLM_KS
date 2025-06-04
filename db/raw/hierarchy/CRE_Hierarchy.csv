@@ -1,0 +1,187 @@
+﻿Heading,Level,File,Index
+Overview,1,CRE30,1
+Categorisation of exposures,1,CRE30,2
+Definition of corporate exposures,1,CRE30,3
+Project finance,2,CRE30,4
+Object finance,2,CRE30,5
+Commodities finance,2,CRE30,6
+Income-producing real estate lending,2,CRE30,7
+High-volatility commercial real estate lending,2,CRE30,8
+Definition of sovereign exposures,1,CRE30,9
+Definition of bank exposures,1,CRE30,10
+Definition of retail exposures,1,CRE30,11
+Definition of qualifying revolving retail exposures,1,CRE30,12
+Definition of equity exposures,1,CRE30,13
+Definition of eligible purchased receivables,1,CRE30,14
+Retail receivables,2,CRE30,15
+Corporate receivables,2,CRE30,16
+Foundation and advanced approaches,1,CRE30,17
+"Corporate, sovereign and bank exposures",1,CRE30,18
+"The SL categories: PF, OF, CF, IPRE and HVCRE",1,CRE30,19
+Retail exposures,1,CRE30,20
+Equity exposures,1,CRE30,21
+Eligible purchased receivables,1,CRE30,22
+Adoption of the IRB approach for asset classes,1,CRE30,23
+Introduction,1,CRE31,1
+Explanation of the risk-weight functions,1,CRE31,2
+Risk-weighted assets for exposures that are in default,1,CRE31,3
+"Risk-weighted assets for corporate, sovereign and bank exposures that are not in default",1,CRE31,4
+"Risk-weight functions for corporate, sovereign and bank exposures",2,CRE31,5
+Firm-size adjustment for small or medium-sized entities (SMEs),3,CRE31,6
+Risk weights for specialised lending,2,CRE31,7
+Risk-weighted assets for retail exposures that are not in default,1,CRE31,8
+Retail residential mortgage exposures,2,CRE31,9
+Qualifying revolving retail exposures,2,CRE31,10
+Other retail exposures,2,CRE31,11
+Introduction,1,CRE32,1
+"Risk components for corporate, sovereign and bank exposures",1,CRE32,2
+Probability of default (PD),2,CRE32,3
+Loss given default (LGD),2,CRE32,4
+LGD under the foundation internal ratings-based (F-IRB) approach: treatment of unsecured claims and non-recognised collateral,3,CRE32,5
+LGD under the F-IRB approach: collateral recognition,3,CRE32,6
+LGD under the F-IRB approach: methodology for the treatment of pools of collateral,3,CRE32,7
+LGD under the advanced approach,3,CRE32,8
+Treatment of certain repo-style transactions,3,CRE32,9
+Treatment of guarantees and credit derivatives,3,CRE32,10
+Treatment of guarantees and credit derivatives: recognition under the foundation approach,3,CRE32,11
+Treatment of guarantees and credit derivatives: recognition under the advanced approach,3,CRE32,12
+Exposure at default (EAD),2,CRE32,13
+Exposure measurement for on-balance sheet items,3,CRE32,14
+Exposure measurement for off-balance sheet items (with the exception of derivatives),3,CRE32,15
+EAD under the foundation approach,3,CRE32,16
+EAD under the advanced approach,3,CRE32,17
+Exposures that give rise to counterparty credit risk,3,CRE32,18
+Treatment of guarantees and credit derivatives,2,CRE32,19
+Treatment of guarantees and credit derivatives: recognition under the foundation approach,3,CRE32,20
+Treatment of guarantees and credit derivatives: recognition under the advanced approach,3,CRE32,21
+Effective maturity (M),2,CRE32,22
+Treatment of maturity mismatches,2,CRE32,23
+Risk components for retail exposures,1,CRE32,24
+Probability of default (PD) and loss given default (LGD),2,CRE32,25
+Recognition of guarantees and credit derivatives,2,CRE32,26
+Exposure at default (EAD),2,CRE32,27
+Introduction,1,CRE34,1
+Risk-weighted assets for default risk,1,CRE34,2
+Foundation IRB treatment,2,CRE34,3
+Advanced IRB treatment,2,CRE34,4
+Risk-weighted assets for dilution risk,1,CRE34,5
+Treatment of purchase price discounts for receivables,1,CRE34,6
+Recognition of credit risk mitigants,1,CRE34,7
+Introduction,1,CRE35,1
+Calculation of expected losses,1,CRE35,2
+Calculation of provisions,1,CRE35,3
+Exposures subject to the IRB approach for credit risk,2,CRE35,4
+Portion of exposures subject to the standardised approach for credit risk,2,CRE35,5
+Treatment of EL and provisions,1,CRE35,6
+Introduction,1,CRE36,1
+Section 1: composition of minimum requirements,1,CRE36,2
+Section 2: compliance with minimum requirements,1,CRE36,3
+Section 3: rating system design,1,CRE36,4
+"Rating dimensions: standards for corporate, sovereign and bank exposures",2,CRE36,5
+Rating dimensions: standards for retail exposures,2,CRE36,6
+"Rating structure: standards for corporate, sovereign and bank exposures",2,CRE36,7
+Rating structure: standards for retail exposures,2,CRE36,8
+Rating criteria,2,CRE36,9
+Rating criteria: exposures subject to the supervisory slotting approach,3,CRE36,10
+Rating assignment horizon,2,CRE36,11
+Use of models,2,CRE36,12
+Documentation of rating system design,2,CRE36,13
+Section 4: risk rating system operations,1,CRE36,14
+Coverage of ratings,2,CRE36,15
+"Integrity of rating process: standards for corporate, sovereign and bank exposures",2,CRE36,16
+Integrity of rating process: standards for retail exposures,2,CRE36,17
+Overrides,2,CRE36,18
+Data maintenance,2,CRE36,19
+"Data maintenance: for corporate, sovereign and bank exposures",3,CRE36,20
+Data maintenance: for retail exposures,3,CRE36,21
+Stress tests used in assessment of capital adequacy,2,CRE36,22
+Section 5: corporate governance and oversight,1,CRE36,23
+Corporate governance,2,CRE36,24
+Credit risk control,2,CRE36,25
+Internal and external audit,2,CRE36,26
+Section 6: use of internal ratings,1,CRE36,27
+Section 7: risk quantification,1,CRE36,28
+Overall requirements for estimation (structure and intent),2,CRE36,29
+Definition of default,2,CRE36,30
+Re-ageing,2,CRE36,31
+Treatment of overdrafts,2,CRE36,32
+Definition of loss for all asset classes,2,CRE36,33
+"Requirements specific to PD estimation : corporate, sovereign and bank exposures",2,CRE36,34
+Requirements specific to PD estimation: retail exposures,2,CRE36,35
+Requirements specific to own-LGD estimates : standards for all asset classes,3,CRE36,36
+Requirements specific to own-LGD estimates: additional standards for corporate and sovereign exposure,3,CRE36,37
+Requirements specific to own-LGD estimates: additional standards for retail exposures,3,CRE36,38
+Requirements specific to own-EAD estimates : standards for all asset classes,3,CRE36,39
+Requirements specific to own-EAD estimates: additional standards for corporate and sovereign exposure,3,CRE36,40
+Requirements specific to own-EAD estimates: additional standards for retail exposures,3,CRE36,41
+Requirements for assessing effect of guarantees : standards for corporate and sovereign exposures where own estimates of LGD are used and standards for retail exposures,3,CRE36,42
+Requirements for assessing effect of credit derivatives: standards for corporate and sovereign exposures where own estimates of LGD are used and standards for retail exposures,3,CRE36,43
+Requirements for assessing effect of guarantees and credit derivatives: standards for banks using foundation LGD estimates,3,CRE36,44
+Requirements specific to estimating PD and LGD (or EL) for qualifying purchased receivables,3,CRE36,45
+Section 8: validation of internal estimates,1,CRE36,46
+Section 9: supervisory LGD and EAD estimates,1,CRE36,47
+Definition of eligibility of commercial and residential real estate as collateral,2,CRE36,48
+Operational requirements for eligible commercial or residential real estate,2,CRE36,49
+Requirements for recognition of financial receivables : definition of eligible receivables,2,CRE36,50
+Requirements for recognition of financial receivables: legal certainty,2,CRE36,51
+Requirements for recognition of financial receivables: risk management,2,CRE36,52
+Requirements for recognition of other physical collateral,2,CRE36,53
+Section 10: requirements for recognition of leasing,1,CRE36,54
+Section 11: disclosure requirements,1,CRE36,55
+General terms,1,CRE50,1
+Transaction types,1,CRE50,2
+"Netting sets, hedging sets, and related terms",1,CRE50,3
+Distributions,1,CRE50,4
+Exposure measures and adjustments,1,CRE50,5
+CCR-related risks,1,CRE50,6
+Introduction,1,CRE51,1
+Counterparty credit risk definition and explanation,2,CRE51,2
+Scope of counterparty credit risk charge,1,CRE51,3
+Methods to calculate counterparty credit risk exposure,1,CRE51,4
+Methods to calculate CCR risk-weighted assets,1,CRE51,5
+Exemptions,1,CRE51,6
+Minimum haircut floors for securities financing transactions (SFTs),2,CRE51,7
+Overview and scope,1,CRE52,1
+Replacement Cost and Net Independent Collateral Amount,1,CRE52,2
+Formulation for unmargined transactions,1,CRE52,3
+Formulation for margined transactions,1,CRE52,4
+Incorporating NICA into replacement cost,1,CRE52,5
+PFE add-on for each netting set,1,CRE52,6
+Multiplier (recognition of excess collateral and negative mark-to-market),1,CRE52,7
+Aggregate add-on and asset classes,1,CRE52,8
+Allocation of derivative transactions to one or more asset classes,1,CRE52,9
+General steps for calculating the PFE add-on for each asset class,1,CRE52,10
+"Time period parameters: Mi, Ei, Si, and Ti",1,CRE52,11
+Trade-level adjusted notional (for trade i): di,1,CRE52,12
+Supervisory delta adjustments,1,CRE52,13
+Effective notional for options,1,CRE52,14
+Supervisory factors: SFi,1,CRE52,15
+Hedging sets,1,CRE52,16
+Maturity factors,1,CRE52,17
+Supervisory correlation parameters,1,CRE52,18
+Asset class level add-ons,1,CRE52,19
+Add-on for interest rate derivatives,2,CRE52,20
+Add-on for foreign exchange derivatives,2,CRE52,21
+Add-on for credit derivatives,2,CRE52,22
+Add-on for equity derivatives,2,CRE52,23
+Add-on for commodity derivatives,2,CRE52,24
+Supervisory specified parameters,1,CRE52,25
+Treatment of multiple margin agreements and multiple netting sets,1,CRE52,26
+Treatment of collateral taken outside of netting sets,1,CRE52,27
+Scope of application,1,CRE54,1
+Central Counterparties,1,CRE54,2
+Exposures to Qualifying CCPs: trade exposures,1,CRE54,3
+Clearing member exposures to CCPs,2,CRE54,4
+Clearing member exposures to clients,2,CRE54,5
+Client exposures,2,CRE54,6
+Treatment of posted collateral,2,CRE54,7
+Default fund exposures,1,CRE54,8
+Hypothetical capital requirement of the CCP,2,CRE54,9
+Capital requirement for each clearing member,2,CRE54,10
+Cap with regard to QCCPs,1,CRE54,11
+Exposures to non-qualifying CCPs,1,CRE54,12
+Counterparty credit risk in the trading book,1,CRE55,1
+Scope,1,CRE56,1
+Haircut floors,1,CRE56,2
+Single in-scope SFTs,2,CRE56,3
+Netting set of SFTs,2,CRE56,4

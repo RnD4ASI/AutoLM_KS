@@ -1,0 +1,240 @@
+﻿Heading,Page,Level,File,Index
+CHAPTER 1: OVERVIEW AND ORIENTATION OF IRB APPROACH,1,1,BCBS05 Jan2001,1
+I. INTRODUCTION,1,2,BCBS05 Jan2001,2
+II. ORIENTATION OF THE IRB APPROACH,3,2,BCBS05 Jan2001,3
+III. SIMPLE SCHEMATIC OF IRB APPROACH,4,2,BCBS05 Jan2001,4
+A. CATEGORISATION OF EXPOSURES,5,3,BCBS05 Jan2001,5
+B. RISK COMPONENTS,5,3,BCBS05 Jan2001,6
+(i) Probability of Default,6,4,BCBS05 Jan2001,7
+(ii) Loss Given Default,6,4,BCBS05 Jan2001,8
+(iii) Exposure at Default (EAD),6,4,BCBS05 Jan2001,9
+(iv) Maturity,7,4,BCBS05 Jan2001,10
+C. RISK WEIGHTS,7,3,BCBS05 Jan2001,11
+D. MINIMUM REQUIREMENTS,7,3,BCBS05 Jan2001,12
+(i) Adherence to minimum requirements,7,4,BCBS05 Jan2001,13
+CHAPTER 2: IRB FRAMEWORK FOR CORPORATE EXPOSURES,9,1,BCBS05 Jan2001,14
+I. DEFINITION OF CORPORATE EXPOSURES,9,2,BCBS05 Jan2001,15
+II. RANGE OF PRACTICE,9,2,BCBS05 Jan2001,16
+A. THE NUMBER OF GRADES BOTH FOR PERFORMING AND NON-PERFORMING LOANS,9,3,BCBS05 Jan2001,17
+B. THE DECISION WHETHER TO FOCUS THE RATING ON THE BORROWER OR THE FACILITY,10,3,BCBS05 Jan2001,18
+C. THE MEANS BY WHICH RATINGS ARE ASSIGNED,10,3,BCBS05 Jan2001,19
+D. THE RISK FACTORS CONSIDERED IN THE RATING ASSIGNMENT PROCESS,11,3,BCBS05 Jan2001,20
+E. THE TIME HORIZON OVER WHICH THE RATING IS CONSIDERED A VALID RISK INDICATOR,12,3,BCBS05 Jan2001,21
+F. USE OF INTERNAL RATINGS,12,3,BCBS05 Jan2001,22
+III. RISK COMPONENTS,13,2,BCBS05 Jan2001,23
+A. OVERVIEW,13,3,BCBS05 Jan2001,24
+B. PROBABILITY OF DEFAULT (PD),15,3,BCBS05 Jan2001,25
+(i) Average PD per grade,15,4,BCBS05 Jan2001,26
+(ii) One year PD,16,4,BCBS05 Jan2001,27
+(iii) Methods for quantifying PD,16,4,BCBS05 Jan2001,28
+(iv) Impact of credit derivatives and guarantees on estimation of PD,16,4,BCBS05 Jan2001,29
+Foundation approach,16,5,BCBS05 Jan2001,30
+Advanced approach,16,5,BCBS05 Jan2001,31
+C. LOSS GIVEN DEFAULT (LGD),18,3,BCBS05 Jan2001,32
+(i) Foundation approach,19,4,BCBS05 Jan2001,33
+Treatment of unsecured exposures and non-recognised collateral,19,5,BCBS05 Jan2001,34
+Eligible collateral under the foundation approach,19,5,BCBS05 Jan2001,35
+Financial collateral,20,5,BCBS05 Jan2001,36
+Eligible CRE and RRE under the foundation approach,20,5,BCBS05 Jan2001,37
+Methodology for recognition of CRE and RRE collateral,20,5,BCBS05 Jan2001,38
+Other forms of collateral,21,5,BCBS05 Jan2001,39
+(ii) LGD under the advanced approach,21,4,BCBS05 Jan2001,40
+Mechanics of incorporating own-estimates into the IRB approach,21,5,BCBS05 Jan2001,41
+D. EXPOSURE AT DEFAULT,22,3,BCBS05 Jan2001,42
+(i) Transactions with uncertain future drawdown,23,4,BCBS05 Jan2001,43
+Foundation approach,23,5,BCBS05 Jan2001,44
+Advanced approach,24,5,BCBS05 Jan2001,45
+(ii) OTC derivatives,24,4,BCBS05 Jan2001,46
+E. MATURITY,25,3,BCBS05 Jan2001,47
+(i) Introduction,25,4,BCBS05 Jan2001,48
+(ii) Treatment of maturity under the foundation IRB approach,26,4,BCBS05 Jan2001,49
+(iii) Treatment of maturity under the advanced IRB approach,27,4,BCBS05 Jan2001,50
+(iv) Definition of 'effective maturity',27,4,BCBS05 Jan2001,51
+(v) Information required by banks,28,4,BCBS05 Jan2001,52
+F. DISCUSSION ON DEFINITION OF DEFAULT,29,3,BCBS05 Jan2001,53
+(i) Current practice for corporate exposures,29,4,BCBS05 Jan2001,54
+(ii) Reference definition of default,30,4,BCBS05 Jan2001,55
+(iii) Prospects of a mapping for estimates based on other definitions,31,4,BCBS05 Jan2001,56
+IV. RISK WEIGHTS FOR CORPORATE EXPOSURES,31,2,BCBS05 Jan2001,57
+A. DETERMINATION OF RISK WEIGHTED ASSETS,31,3,BCBS05 Jan2001,58
+B. FORMULA FOR RWA FOR CORPORATE EXPOSURES,32,3,BCBS05 Jan2001,59
+C. CALIBRATION OF BENCHMARK RISK WEIGHTS FOR CORPORATE EXPOSURES,33,3,BCBS05 Jan2001,60
+(i) Introduction,34,4,BCBS05 Jan2001,61
+(ii) Survey-based evidence,35,4,BCBS05 Jan2001,62
+(iii) Direct estimates of risk weights,35,4,BCBS05 Jan2001,63
+D. MATURITY-ADJUSTMENTS TO CORPORATE RISK WEIGHTS,36,3,BCBS05 Jan2001,64
+(i) Maturity-adjustments based on MTM approach,37,4,BCBS05 Jan2001,65
+(ii) Maturity-adjustments based on adjusted DM approach,38,4,BCBS05 Jan2001,66
+E. EXPECTED LOSS AND THE DETERMINATION OF CORPORATE RISK WEIGHTS,40,3,BCBS05 Jan2001,67
+V. MINIMUM REQUIREMENTS FOR CORPORATE EXPOSURES UNDER THE FOUNDATION APPROACH,41,2,BCBS05 Jan2001,68
+A. INTRODUCTION,41,3,BCBS05 Jan2001,69
+B. CRITERIA TO ENSURE MEANINGFUL DIFFERENTIATION OF RISK,42,3,BCBS05 Jan2001,70
+(i) Overall rating system structure,42,4,BCBS05 Jan2001,71
+(ii) Rating grade structure,43,4,BCBS05 Jan2001,72
+C. COMPLETENESS AND INTEGRITY OF RATING ASSIGNMENTS,43,3,BCBS05 Jan2001,73
+(i) Introduction,43,4,BCBS05 Jan2001,74
+(ii) Coverage of ratings,43,4,BCBS05 Jan2001,75
+(iii) Independent assignment or review,44,4,BCBS05 Jan2001,76
+D. OVERSIGHT OVER THE RATING SYSTEM AND PROCESSES,44,3,BCBS05 Jan2001,77
+(i) Introduction,44,4,BCBS05 Jan2001,78
+E. CRITERIA AND ORIENTATION OF RATING SYSTEM,45,3,BCBS05 Jan2001,79
+(i) Introduction,45,4,BCBS05 Jan2001,80
+(ii) Assessment horizon,45,4,BCBS05 Jan2001,81
+F. MINIMUM REQUIREMENTS FOR ESTIMATION OF PD,46,3,BCBS05 Jan2001,82
+G. DATA COLLECTION AND IT SYSTEMS,48,3,BCBS05 Jan2001,83
+H. USE OF INTERNAL RATINGS,48,3,BCBS05 Jan2001,84
+I. INTERNAL VALIDATION,49,3,BCBS05 Jan2001,85
+J. DISCLOSURE OF KEY INTERNAL RATINGS INFORMATION,49,3,BCBS05 Jan2001,86
+"K. USE OF SUPERVISORY ESTIMATES OF EAD, LGD, AND GUARANTEES/CREDIT DERIVATIVES",49,3,BCBS05 Jan2001,87
+(i) Requirements for LGD,49,4,BCBS05 Jan2001,88
+(ii) Standards for supervisory estimates of EAD,50,4,BCBS05 Jan2001,89
+(iii) Standards for supervisory treatment of guarantees/credit derivatives,50,4,BCBS05 Jan2001,90
+VI. MINIMUM REQUIREMENTS FOR THE ADVANCED APPROACH TO CORPORATE EXPOSURES,50,2,BCBS05 Jan2001,91
+A. REQUIREMENT FOR LOSS GIVEN DEFAULT,50,3,BCBS05 Jan2001,92
+B. REQUIREMENTS FOR EXPOSURE AT DEFAULT,51,3,BCBS05 Jan2001,93
+C. REQUIREMENTS FOR GUARANTEES AND CREDIT DERIVATIVES,51,3,BCBS05 Jan2001,94
+VII. CORPORATE EXPOSURES: KEY ISSUES WHERE FEEDBACK IS SOUGHT,52,2,BCBS05 Jan2001,95
+A. MATURITY,52,3,BCBS05 Jan2001,96
+B. REFERENCE DEFINITION OF DEFAULT,53,3,BCBS05 Jan2001,97
+C. CALIBRATION OF CORPORATE RISK WEIGHTS,53,3,BCBS05 Jan2001,98
+D. MINIMUM REQUIREMENTS,54,3,BCBS05 Jan2001,99
+CHAPTER 3: IRB FRAMEWORK FOR RETAIL EXPOSURES,55,1,BCBS05 Jan2001,100
+I. DEFINITION OF RETAIL EXPOSURES,55,2,BCBS05 Jan2001,101
+II. RANGE OF PRACTICE,56,2,BCBS05 Jan2001,102
+III. RISK COMPONENTS,57,2,BCBS05 Jan2001,103
+"A. TWO FAMILIES OF INPUTS: PD/LGD, OR EL",57,3,BCBS05 Jan2001,104
+B. OWN ESTIMATES APPROACH TO INPUTS,58,3,BCBS05 Jan2001,105
+IV. RISK WEIGHTS FOR RETAIL EXPOSURES,59,2,BCBS05 Jan2001,106
+A. INTRODUCTION,60,3,BCBS05 Jan2001,107
+B. CONCEPTUAL FRAMEWORK FOR THE CALIBRATION OF RISK WEIGHTS,61,3,BCBS05 Jan2001,108
+(i) Introduction,62,4,BCBS05 Jan2001,109
+(ii) Industry survey results,63,4,BCBS05 Jan2001,110
+(iii) Qualitative results,64,4,BCBS05 Jan2001,111
+(iv) Quantitative results,65,4,BCBS05 Jan2001,112
+C. BENCHMARK RISK WEIGHTS FOR RETAIL EXPOSURES,66,3,BCBS05 Jan2001,113
+D. TRANSLATION OF EL INPUTS INTO RISK WEIGHTS,67,3,BCBS05 Jan2001,114
+E. MATURITY,68,3,BCBS05 Jan2001,115
+V. MINIMUM REQUIREMENTS FOR RETAIL PORTFOLIOS,69,2,BCBS05 Jan2001,116
+A. INTRODUCTION,70,3,BCBS05 Jan2001,117
+B. RATING STRUCTURE,71,3,BCBS05 Jan2001,118
+C. SEGMENTATION,72,3,BCBS05 Jan2001,119
+(i) Introduction,73,4,BCBS05 Jan2001,120
+(ii) Proposed minimum requirements for risk segmentation,74,4,BCBS05 Jan2001,121
+Segmentation by product type,75,5,BCBS05 Jan2001,122
+Segmentation by borrower risk,76,5,BCBS05 Jan2001,123
+Segmentation by delinquency status,77,5,BCBS05 Jan2001,124
+Segmentation by vintage,78,5,BCBS05 Jan2001,125
+Additional Segmentation,79,5,BCBS05 Jan2001,126
+Number of exposures within a segment,80,5,BCBS05 Jan2001,127
+D. REQUIREMENTS FOR ESTIMATION OF RISK COMPONENTS,81,3,BCBS05 Jan2001,128
+VI. RETAIL EXPOSURES: KEY ISSUES WHERE FEEDBACK IS SOUGHT,82,2,BCBS05 Jan2001,129
+A. DEFINITION OF RETAIL EXPOSURES,83,3,BCBS05 Jan2001,130
+B. DERIVATION OF RISK WEIGHTS,84,3,BCBS05 Jan2001,131
+C. MINIMUM REQUIREMENTS,85,3,BCBS05 Jan2001,132
+CHAPTER 4: IRB APPROACH TO BANK EXPOSURES,86,1,BCBS05 Jan2001,133
+I. DEFINITION OF BANK EXPOSURES,87,2,BCBS05 Jan2001,134
+II. RANGE OF PRACTICE,88,2,BCBS05 Jan2001,135
+III. RISK COMPONENTS,89,2,BCBS05 Jan2001,136
+A. Probability of Default (PD),90,3,BCBS05 Jan2001,137
+B. Loss Given Default (LGD),91,3,BCBS05 Jan2001,138
+C. Maturity,92,3,BCBS05 Jan2001,139
+D. Exposure measurement,93,3,BCBS05 Jan2001,140
+IV. Risk Weights for Bank Exposures,94,2,BCBS05 Jan2001,141
+V. Minimum Requirements for Bank Exposures,95,2,BCBS05 Jan2001,142
+A. Rating criteria,96,3,BCBS05 Jan2001,143
+CHAPTER 5: IRB APPROACH TO SOVEREIGN EXPOSURES,97,1,BCBS05 Jan2001,144
+I. Definition of Sovereign Exposures,98,2,BCBS05 Jan2001,145
+II. Range of Practice,99,2,BCBS05 Jan2001,146
+III. Risk Components,100,2,BCBS05 Jan2001,147
+A. Probability of Default (PD),101,3,BCBS05 Jan2001,148
+B. Loss Given Default (LGD),102,3,BCBS05 Jan2001,149
+C. Maturity,103,3,BCBS05 Jan2001,150
+D. Exposure measurement,104,3,BCBS05 Jan2001,151
+IV. Calibration of Risk Weights,105,2,BCBS05 Jan2001,152
+V. Minimum Requirements for Sovereign Exposures,106,2,BCBS05 Jan2001,153
+A. Definition of default,107,3,BCBS05 Jan2001,154
+B. Rating grade structure,108,3,BCBS05 Jan2001,155
+C. Rating criteria,109,3,BCBS05 Jan2001,156
+D. Oversight over rating system and process,110,3,BCBS05 Jan2001,157
+E. Requirements for use of own estimates of LGD under the advanced approach,111,3,BCBS05 Jan2001,158
+CHAPTER 6: KEY ISSUES IN DEVELOPING AN APPROACH TO EQUITY EXPOSURESS FOR IRB BANKS,112,1,BCBS05 Jan2001,159
+I. Overview,113,2,BCBS05 Jan2001,160
+II. Discussion of Approaches,114,2,BCBS05 Jan2001,161
+A. Internal ratings framework,115,3,BCBS05 Jan2001,162
+(i) Pros of a corporate debt framework for equity,116,4,BCBS05 Jan2001,163
+(ii) Cons of a corporate debt framework for equity,117,4,BCBS05 Jan2001,164
+B. A market risk or stress test approach to equity positions,118,3,BCBS05 Jan2001,165
+(i) Pros of a market risk/stress test approach,119,4,BCBS05 Jan2001,166
+(ii) Cons of a market risk/stress test approach,120,4,BCBS05 Jan2001,167
+III. Equity Exposures: Key Issues where Feedback is Sought,121,2,BCBS05 Jan2001,168
+CHAPTER 7: KEY ISSUES IN DEVELOPING AN IRB APPROACH TO PROJECT FINANCE,122,1,BCBS05 Jan2001,169
+I. Overview,123,2,BCBS05 Jan2001,170
+II. Range of Practice,124,2,BCBS05 Jan2001,171
+A. Definition of project finance portfolios,125,3,BCBS05 Jan2001,172
+"B. Difficulties in measurement of PD, LGD, and EAD, and associated data limitations",126,3,BCBS05 Jan2001,173
+"C. The higher correlations among PD, LGD, and EAD",127,3,BCBS05 Jan2001,174
+III. Potential Inputs into an IRB Framework for Project Finance,128,2,BCBS05 Jan2001,175
+"A. Option 1: separate analyses of PD, LGD, and EAD",129,3,BCBS05 Jan2001,176
+B. Option 2: separate analyses of EL and EAD,130,3,BCBS05 Jan2001,177
+C. Option 3: provide for both options 1 and 2,131,3,BCBS05 Jan2001,178
+D. Consideration of further dimensions,132,3,BCBS05 Jan2001,179
+IV. Issues related to a risk weight structure,133,2,BCBS05 Jan2001,180
+V. Preliminary thoughts on minimum requirements,134,2,BCBS05 Jan2001,181
+VI. Project Finance: Key Areas where Feedback is Sought,135,2,BCBS05 Jan2001,182
+CHAPTER 8: GRANULARITY,136,1,BCBS05 Jan2001,183
+I. Importance of the Granularity Adjustment,137,2,BCBS05 Jan2001,184
+II. Conceptual Background,138,2,BCBS05 Jan2001,185
+III. Scope of Application,139,2,BCBS05 Jan2001,186
+IV. Methodology for the Granularity Adjustment,140,2,BCBS05 Jan2001,187
+V. Exposure Aggregation and Credit Risk Mitigation,141,2,BCBS05 Jan2001,188
+VI. Technical Derivation,142,2,BCBS05 Jan2001,189
+CHAPTER 9: IMPLEMENTATION ISSUES,143,1,BCBS05 Jan2001,190
+I. Transitional Arrangements,144,2,BCBS05 Jan2001,191
+II. Adoption of the IRB Approach Across all Exposures,145,2,BCBS05 Jan2001,192
+III. Adoption of Elements of the Advanced Approach for IRB,146,2,BCBS05 Jan2001,193
+Executive Summary,1,1,BCBS205 Oct2011,194
+Introduction,1,1,BCBS205 Oct2011,195
+Committee's considerations regarding the issues raised,2,1,BCBS205 Oct2011,196
+Leverage ratio,2,2,BCBS205 Oct2011,197
+20% credit conversion factor under the risk-based measure,3,2,BCBS205 Oct2011,198
+One-year maturity floor,3,2,BCBS205 Oct2011,199
+Claims on banks,4,2,BCBS205 Oct2011,200
+1. Introduction,1,1,IRB Explanatory Note Jul2005,201
+2. Economic foundations of the risk weight formulas,1,1,IRB Explanatory Note Jul2005,202
+3. Regulatory requirements to the Basel credit risk model,4,1,IRB Explanatory Note Jul2005,203
+4. Model specification,4,1,IRB Explanatory Note Jul2005,204
+4.1. The ASRF framework,4,2,IRB Explanatory Note Jul2005,205
+4.2. Average and conditional PDs,5,2,IRB Explanatory Note Jul2005,206
+4.3. Loss Given Default,6,2,IRB Explanatory Note Jul2005,207
+4.4. Expected versus Unexpected Losses,7,2,IRB Explanatory Note Jul2005,208
+4.5. Asset correlations,8,2,IRB Explanatory Note Jul2005,209
+4.6. Maturity adjustments,9,2,IRB Explanatory Note Jul2005,210
+4.7. Exposure at Default and risk weighted assets,11,2,IRB Explanatory Note Jul2005,211
+5. Calibration of the model,11,1,IRB Explanatory Note Jul2005,212
+5.1. Confidence level,11,2,IRB Explanatory Note Jul2005,213
+"5.2. Supervisory estimates of asset correlations for corporate, bank and sovereign exposures",12,2,IRB Explanatory Note Jul2005,214
+5.3. Specification of the retail risk weight curves,14,2,IRB Explanatory Note Jul2005,215
+6. References,15,1,IRB Explanatory Note Jul2005,216
+Foundations of the standardised approach for measuring counterparty credit risk exposures,1,1,BCBS WP26,217
+1. General structure of the SA-CCR,1,1,BCBS WP26,218
+1.1 Exposure at default,2,1,BCBS WP26,219
+1.2 Replacement cost,2,2,BCBS WP26,220
+1.3 Potential future exposure,2,3,BCBS WP26,221
+2. General framework for add-ons,1,3,BCBS WP26,222
+2.1 Assumptions and set-up,2,3,BCBS WP26,223
+2.2 Add-ons for unmargined netting sets,2,4,BCBS WP26,224
+2.3 Add-ons for margined netting sets,2,5,BCBS WP26,225
+3. Structure of add-on calculations,1,6,BCBS WP26,226
+3.1 Trade-level add-ons,2,6,BCBS WP26,227
+3.2 Add-on aggregation,2,7,BCBS WP26,228
+4. Add-on calculations by asset class,1,8,BCBS WP26,229
+4.1 Interest rate,2,8,BCBS WP26,230
+4.2 Foreign exchange,2,9,BCBS WP26,231
+4.3 Credit,2,9,BCBS WP26,232
+4.4 Equities,2,10,BCBS WP26,233
+4.5 Commodities,2,10,BCBS WP26,234
+5. Multiplier,1,11,BCBS WP26,235
+6. Calibration,1,13,BCBS WP26,236
+6.1 Correlations between IR maturity buckets,2,14,BCBS WP26,237
+6.2 Deltas for CDO,2,18,BCBS WP26,238
+References,1,20,BCBS WP26,239
